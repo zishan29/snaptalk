@@ -2,6 +2,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 [Live Preview](https://snaptalk-411413.web.app/)
 
+## Demo credentials
+
+username: testuser
+password: testuser@123
+
 ## Getting Started
 
 First, run the development server:
