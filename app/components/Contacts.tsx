@@ -1,8 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import Image from 'next/image';
-
 interface Contact {
   _id?: string;
   username?: string;
@@ -60,10 +58,8 @@ export default function Contacts({
             onClick={() => setContactDetails(contact)}
           >
             {contact.profilePicture ? (
-              <Image
+              <img
                 src={contact.profilePicture}
-                width={100}
-                height={100}
                 alt="profile"
                 className="h-4/5 w-auto rounded-full"
               />

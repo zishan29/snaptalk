@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import ChatNav from './ChatNav';
 import Message from './Message';
-import Image from 'next/image';
 import clsx from 'clsx';
 
 interface Message {
@@ -99,12 +98,10 @@ export default function Chat({ contactDetails }: { contactDetails: Contact }) {
                         {message.content.data}
                       </div>
                     ) : (
-                      <Image
+                      <img
                         src={message.content.data}
                         alt={message.content.type}
-                        width={400}
-                        height={400}
-                        className="h-auto w-auto rounded-md bg-neutral-600 p-4"
+                        className="h-4/5 rounded-md bg-neutral-600 p-4"
                       />
                     )}
                   </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './components.module.css';
 import { useRouter } from 'next/navigation';
 import { MouseEvent } from 'react';
@@ -39,7 +39,9 @@ export default function Signup() {
       });
       if (res.ok) {
         let resData = await res.json();
-        localStorage.setItem('token', resData.token);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', resData.token);
+        }
         router.push('/');
       }
       if (res.status === 400) {
@@ -51,29 +53,36 @@ export default function Signup() {
     }
   }
 
-  if (localStorage.getItem('token')) {
-    (async () => {
-      try {
-        let res = await fetch('https://snap-talk.adaptable.app/verifyToken', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ token: localStorage.getItem('token') }),
-        });
-        if (res.status === 401) {
-          let resData = await res.json();
-          console.log(resData.error);
-          router.push('/login');
-        }
-        if (res.status === 200) {
-          router.push('/');
-        }
-      } catch (err) {
-        console.log(err);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('token')) {
+        (async () => {
+          try {
+            let res = await fetch(
+              'https://snap-talk.adaptable.app/verifyToken',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: localStorage.getItem('token') }),
+              },
+            );
+            if (res.status === 401) {
+              let resData = await res.json();
+              console.log(resData.error);
+              router.push('/login');
+            }
+            if (res.status === 200) {
+              router.push('/');
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        })();
       }
-    })();
-  }
+    }
+  }, []);
 
   return (
     <>

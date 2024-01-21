@@ -12,30 +12,35 @@ export default function Login() {
   const router = useRouter();
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
-      (async () => {
-        try {
-          let res = await fetch('https://snap-talk.adaptable.app/verifyToken', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token: localStorage.getItem('token') }),
-          });
-          if (res.status === 401) {
-            let resData = await res.json();
-            console.log(resData.error);
-            router.push('/login');
+    if (typeof window !== 'undefined') {
+      if (localStorage.getItem('token')) {
+        (async () => {
+          try {
+            let res = await fetch(
+              'https://snap-talk.adaptable.app/verifyToken',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: localStorage.getItem('token') }),
+              },
+            );
+            if (res.status === 401) {
+              let resData = await res.json();
+              console.log(resData.error);
+              router.push('/login');
+            }
+            if (res.status === 200) {
+              router.push('/');
+            }
+          } catch (err) {
+            console.log(err);
           }
-          if (res.status === 200) {
-            router.push('/');
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      })();
+        })();
+      }
     }
-  }, [localStorage.getItem('token')]);
+  });
 
   async function loginUser(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();

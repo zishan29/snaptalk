@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 
 interface Contact {
   _id?: string;
@@ -63,11 +62,9 @@ export default function AppNav({
               onClick={() => setEditProfile(true)}
             >
               {user.profilePicture !== '' ? (
-                <Image
+                <img
                   src={user.profilePicture as string}
                   alt=""
-                  width={50}
-                  height={50}
                   className="h-10 w-auto rounded-full"
                 />
               ) : (

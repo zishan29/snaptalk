@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
 import { MouseEvent } from 'react';
 
@@ -143,11 +142,9 @@ export default function EditProfile({
             {user.profilePicture !== '' ? (
               <div className="relative">
                 {user.profilePicture && (
-                  <Image
+                  <img
                     src={user.profilePicture as string}
                     alt="profile"
-                    width={200}
-                    height={200}
                     className="h-60 w-auto rounded-full brightness-75"
                   />
                 )}

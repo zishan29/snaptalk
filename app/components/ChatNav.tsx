@@ -1,7 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-
 interface Contact {
   _id?: string;
   username?: string;
@@ -24,11 +22,9 @@ export default function ChatNav({
           className="flex h-16 cursor-pointer items-center gap-2 px-2"
         >
           {contactDetails.profilePicture !== '' ? (
-            <Image
+            <img
               src={contactDetails.profilePicture as string}
               alt="profile"
-              width={50}
-              height={50}
               className="h-10 w-auto rounded-full"
             />
           ) : (

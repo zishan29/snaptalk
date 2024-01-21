@@ -1,6 +1,5 @@
 'use client';
 
-import { MouseEvent } from 'react';
 import { useState, useRef } from 'react';
 
 interface Contact {
@@ -49,7 +48,7 @@ export default function Message({
     const bearer = `Bearer ${token}`;
 
     const formData = new FormData();
-    formData.append('receiverId', contactDetails._id);
+    formData.append('receiverId', contactDetails._id as string);
 
     formData.append('content[type]', message ? 'text' : 'image');
     formData.append('content[data]', message);
@@ -67,7 +66,6 @@ export default function Message({
         body: formData,
       });
       if (res.ok) {
-        let data = await res.json();
         setMessage('');
         (async () => {
           let res2 = await fetch(
