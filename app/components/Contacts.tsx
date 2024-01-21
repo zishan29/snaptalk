@@ -17,6 +17,8 @@ export default function Contacts({
   setContactDetails: (contact: Contact) => void;
 }) {
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     (async () => {
       let token = localStorage.getItem('token');
@@ -32,6 +34,7 @@ export default function Contacts({
         if (res.ok) {
           let resData = await res.json();
           setContacts(resData.user.contacts);
+          setLoading(false);
         }
       } catch (err) {
         console.log(err);
@@ -40,6 +43,15 @@ export default function Contacts({
   }, []);
   return (
     <>
+      {loading ? (
+        <div className="lds-ellipsis absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      ) : (
+        ''
+      )}
       {contacts.length > 0 &&
         contacts.map((contact) => (
           <div
@@ -53,6 +65,7 @@ export default function Contacts({
                 width={100}
                 height={100}
                 alt="profile"
+                className="h-4/5 w-auto rounded-full"
               />
             ) : (
               <svg

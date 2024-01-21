@@ -47,12 +47,14 @@ export default function Home() {
   return (
     <main className="flex h-screen w-screen justify-center bg-neutral-900">
       <div className="grid h-screen w-4/5 grid-cols-6">
-        <div className="col-span-2 border-r border-neutral-500 bg-neutral-800">
+        <div className="relative col-span-2 border-r border-neutral-500 bg-neutral-800">
           {editProfile ? (
             <EditProfile setEditProfile={setEditProfile} />
           ) : (
             <>
-              <AppNav setEditProfile={setEditProfile} />
+              <div className="relative h-16 w-full bg-neutral-600">
+                <AppNav setEditProfile={setEditProfile} />
+              </div>
               <Contacts setContactDetails={setContactDetails} />
             </>
           )}
