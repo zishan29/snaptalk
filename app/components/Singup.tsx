@@ -52,7 +52,27 @@ export default function Signup() {
   }
 
   if (localStorage.getItem('token')) {
-    router.push('/');
+    (async () => {
+      try {
+        let res = await fetch('https://snap-talk.adaptable.app/verifyToken', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token: localStorage.getItem('token') }),
+        });
+        if (res.status === 401) {
+          let resData = await res.json();
+          console.log(resData.error);
+          router.push('/login');
+        }
+        if (res.status === 200) {
+          router.push('/');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    })();
   }
 
   return (

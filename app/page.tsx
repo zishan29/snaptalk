@@ -4,6 +4,9 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Contacts from './components/Contacts';
 import Chat from './components/Chat';
+import AppNav from './components/AppNav';
+import EditProfile from './components/EditProfile';
+import Placeholder from './components/Placeholder';
 
 interface Contact {
   _id?: string;
@@ -15,6 +18,7 @@ interface Contact {
 
 export default function Home() {
   const [contactDetails, setContactDetails] = useState<Contact>({});
+  const [editProfile, setEditProfile] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -36,16 +40,29 @@ export default function Home() {
         console.log(err);
       }
     })();
-  }, []);
+  });
+
+  const isEmptyObject = (obj: Contact) => !Object.keys(obj).length;
 
   return (
-    <main className="flex h-screen w-screen justify-center">
+    <main className="flex h-screen w-screen justify-center bg-neutral-900">
       <div className="grid h-screen w-4/5 grid-cols-6">
-        <div className="col-span-2 bg-gray-200">
-          <Contacts setContactDetails={setContactDetails} />
+        <div className="col-span-2 border-r border-neutral-500 bg-neutral-800">
+          {editProfile ? (
+            <EditProfile setEditProfile={setEditProfile} />
+          ) : (
+            <>
+              <AppNav setEditProfile={setEditProfile} />
+              <Contacts setContactDetails={setContactDetails} />
+            </>
+          )}
         </div>
-        <div className="col-span-4 bg-gray-100">
-          <Chat contactDetails={contactDetails} />
+        <div className="col-span-4 bg-neutral-600">
+          {isEmptyObject(contactDetails) ? (
+            <Placeholder />
+          ) : (
+            <Chat contactDetails={contactDetails} />
+          )}
         </div>
       </div>
     </main>

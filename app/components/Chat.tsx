@@ -62,39 +62,56 @@ export default function Chat({ contactDetails }: { contactDetails: Contact }) {
         console.log(err);
       }
     })();
-  }, [contactDetails]);
+  }, [contactDetails, userId]);
 
   const isEmptyObject = (obj: Contact) => !Object.keys(obj).length;
   return (
     <>
-      <ChatNav contactDetails={contactDetails} />
-      <div className="grid">
-        {messages.length > 0 &&
-          messages.map((message) => (
-            <div
-              key={message._id}
-              className={clsx(
-                message.isUser ? 'justify-self-end' : 'justify-self-start',
-              )}
-            >
-              {message.content.type === 'text' ? (
-                <div>{message.content.data}</div>
-              ) : (
-                <Image
-                  src={message.content.data}
-                  alt={message.content.type}
-                  width={300}
-                  height={300}
-                />
-              )}
-            </div>
-          ))}
+      <div className="flex h-screen flex-col">
+        <div className="flex-none">
+          <ChatNav contactDetails={contactDetails} />
+        </div>
+        <div className="flex-1 overflow-y-auto bg-neutral-800 text-gray-200">
+          <div className="mx-2 my-4 grid gap-4">
+            {messages.length > 0 ? (
+              messages.map((message) => (
+                <div
+                  key={message._id}
+                  className={clsx(
+                    message.isUser ? 'justify-self-end' : 'justify-self-start',
+                  )}
+                >
+                  {message.content.type === 'text' ? (
+                    <div className="rounded-md bg-neutral-600 px-4 py-2">
+                      {message.content.data}
+                    </div>
+                  ) : (
+                    <Image
+                      src={message.content.data}
+                      alt={message.content.type}
+                      width={400}
+                      height={400}
+                      className="h-auto w-auto rounded-md bg-neutral-600 p-4"
+                    />
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className="color-gray-200 justify-self-center">
+                You have no conversation with this user
+              </div>
+            )}
+          </div>
+        </div>
+        {!isEmptyObject(contactDetails) && (
+          <div className="flex-none">
+            <Message
+              contactDetails={contactDetails}
+              setMessages={setMessages}
+            />
+          </div>
+        )}
       </div>
-      {!isEmptyObject(contactDetails) ? (
-        <Message contactDetails={contactDetails} setMessages={setMessages} />
-      ) : (
-        ''
-      )}
     </>
   );
 }

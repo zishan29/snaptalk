@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './components.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -10,6 +10,32 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      (async () => {
+        try {
+          let res = await fetch('https://snap-talk.adaptable.app/verifyToken', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: localStorage.getItem('token') }),
+          });
+          if (res.status === 401) {
+            let resData = await res.json();
+            console.log(resData.error);
+            router.push('/login');
+          }
+          if (res.status === 200) {
+            router.push('/');
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      })();
+    }
+  }, [localStorage.getItem('token')]);
 
   async function loginUser(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
@@ -39,10 +65,6 @@ export default function Login() {
     } catch (err) {
       console.log(err);
     }
-  }
-
-  if (localStorage.getItem('token')) {
-    router.push('/');
   }
 
   return (
