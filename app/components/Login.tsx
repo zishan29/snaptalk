@@ -44,9 +44,42 @@ export default function Login() {
 
   async function loginUser(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
+    setUsername('testuser');
+    setPassword('testuser@123');
+
     let data = {
       username: username,
       password: password,
+    };
+
+    try {
+      let res = await fetch('https://snap-talk.adaptable.app/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (res.ok) {
+        let resData = await res.json();
+        localStorage.setItem('token', resData.token);
+        localStorage.setItem('id', resData.userData._id);
+        router.push('/');
+      }
+      if (res.status === 403) {
+        const resData = await res.json();
+        setErrorMessage(resData.info.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function demoLoginUser(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    let data = {
+      username: 'testuser',
+      password: 'testuser@123',
     };
 
     try {
@@ -82,6 +115,7 @@ export default function Login() {
             placeholder=""
             type="text"
             className={styles.input}
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
           ></input>
           <span>username</span>
@@ -93,6 +127,7 @@ export default function Login() {
             placeholder=""
             type="password"
             className={styles.input}
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></input>
           <span>password</span>
@@ -103,6 +138,12 @@ export default function Login() {
         <button className={styles.fancy} onClick={(e) => loginUser(e)}>
           <span className={styles['top-key']}></span>
           <span className={styles.text}>Log in</span>
+          <span className={styles['bottom-key-1']}></span>
+          <span className={styles['bottom-key-2']}></span>
+        </button>
+        <button className={styles.fancy2} onClick={(e) => demoLoginUser(e)}>
+          <span className={styles['top-key']}></span>
+          <span className={styles.text}>Demo login</span>
           <span className={styles['bottom-key-1']}></span>
           <span className={styles['bottom-key-2']}></span>
         </button>

@@ -61,7 +61,7 @@ export default function AppNav({
               className="flex cursor-pointer items-center gap-2 rounded-md p-2"
               onClick={() => setEditProfile(true)}
             >
-              {user.profilePicture !== '' ? (
+              {user && user.profilePicture !== '' ? (
                 <img
                   src={user.profilePicture as string}
                   alt=""
