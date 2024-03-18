@@ -44,8 +44,6 @@ export default function Login() {
 
   async function loginUser(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
-    setUsername('testuser');
-    setPassword('testuser@123');
 
     let data = {
       username: username,
@@ -77,6 +75,9 @@ export default function Login() {
 
   async function demoLoginUser(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
+    setUsername('testuser');
+    setPassword('testuser@123');
+
     let data = {
       username: 'testuser',
       password: 'testuser@123',
